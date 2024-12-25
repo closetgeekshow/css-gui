@@ -6,7 +6,36 @@
 
 import BasePattern from '../BasePattern';
 
+/**
+ * @typedef {Object} GradientStop
+ * @property {string} color - The color value in rgba or hex
+ * @property {string} position - The position as a percentage
+ */
+
+/**
+ * @typedef {Object} GradientConfig
+ * @property {string} ANGLE - The gradient angle
+ * @property {GradientStop[]} STOPS - Array of gradient color stops
+ */
+
+/**
+ * @typedef {Object} AnimationKeyframe
+ * @property {number} rotation - Rotation degree value
+ */
+
+/**
+ * @class OneOrb
+ * @extends BasePattern
+ * @description Creates an animated orb with multiple gradient layers and rotation animation
+ */
 export default class OneOrb extends BasePattern {
+  /**
+   * @constant {Object} CONFIG
+   * @property {Object} GRADIENTS - Gradient configurations for background and orb
+   * @property {Object} ANIMATION - Animation settings including keyframes
+   * @property {Object} SHADOW - Shadow effect parameters
+   * @property {Object} DIMENSIONS - Size configurations
+   */
   static CONFIG = {
     GRADIENTS: {
       BACKGROUND: {
@@ -86,7 +115,15 @@ export default class OneOrb extends BasePattern {
     }
   };
 
-  // Rest of the class implementation remains the same but uses CONFIG values
+  /**
+   * @constant {Object} defaultParams
+   * @property {number} size - Size of the orb in pixels
+   * @property {number} rotationDegrees - Maximum rotation angle
+   * @property {number} animationDuration - Animation duration in seconds
+   * @property {number} shadowBlur - Shadow blur radius
+   * @property {number} shadowSpread - Shadow spread radius
+   * @property {number} shadowOpacity - Shadow opacity value
+   */
   static defaultParams = {
     size: OneOrb.CONFIG.DIMENSIONS.DEFAULT_SIZE,
     rotationDegrees: OneOrb.CONFIG.ANIMATION.KEYFRAMES.QUARTER.rotation,
@@ -97,11 +134,22 @@ export default class OneOrb extends BasePattern {
     // ... other parameters
   };
 
+  /**
+   * @constructor
+   * @param {Object} params - Configuration parameters
+   * @param {number} [params.seed] - Random seed for pattern generation
+   */
   constructor(params = {}) {
     super(params.seed);
     this.params = { ...OneOrb.defaultParams, ...params };
   }
 
+  /**
+   * @public
+   * @returns {Object} Generated CSS and keyframe animations
+   * @property {string} css - The CSS rules for the orb
+   * @property {string} keyframes - The keyframe animation definition
+   */
   generate() {
     const {
       size,
@@ -149,6 +197,11 @@ export default class OneOrb extends BasePattern {
     };
   }
 
+  /**
+   * @static
+   * @public
+   * @returns {Object} Parameter definitions for the css.gui interface
+   */
   static getParameterDefinitions() {
     return {
       size: { type: 'range', min: 100, max: 500, default: 300 },
