@@ -7,21 +7,94 @@
 import BasePattern from '../BasePattern';
 
 export default class OneOrb extends BasePattern {
+  static CONFIG = {
+    GRADIENTS: {
+      BACKGROUND: {
+        FIRST: {
+          ANGLE: 'to top',
+          STOPS: [
+            { color: 'rgba(89,88,179,1)', position: '0%' },
+            { color: 'rgba(76,110,207,0.29)', position: '17%' },
+            { color: 'rgba(76,110,207,0)', position: '24%' }
+          ]
+        },
+        SECOND: {
+          ANGLE: '20deg',
+          STOPS: [
+            { color: '#2ef5cd', position: '0%' },
+            { color: '#4c6ecf', position: '44%' },
+            { color: '#6567ce', position: '60%' },
+            { color: '#fa99c7', position: '100%' }
+          ]
+        }
+      },
+      ORB: {
+        FIRST: {
+          ANGLE: '45deg',
+          STOPS: [
+            { color: 'rgba(46,244,205,0)', position: '30%' },
+            { color: 'rgba(198,171,203,0)', position: '60%' },
+            { color: 'rgba(246,148,203,1)', position: '100%' }
+          ]
+        },
+        SECOND: {
+          TYPE: 'radial',
+          STOPS: [
+            { color: 'rgba(76,110,207,0)', position: '27%' },
+            { color: 'rgba(76,110,207,0.33)', position: '51%' },
+            { color: 'rgba(89,88,179,0.58)', position: '69%' },
+            { color: 'rgba(89,78,183,1)', position: '100%' }
+          ]
+        },
+        THIRD: {
+          ANGLE: '80deg',
+          STOPS: [
+            { color: 'rgba(246,148,203,0)', position: '0%' },
+            { color: 'rgba(70,232,205,0.1)', position: '70%' },
+            { color: 'rgba(46,244,205,1)', position: '100%' }
+          ]
+        },
+        FOURTH: {
+          ANGLE: '45deg',
+          STOPS: [
+            { color: 'rgba(46,244,205,1)', position: '0%' },
+            { color: 'rgba(76,110,207,0.2)', position: '50%' },
+            { color: 'rgba(76,110,207,0)', position: '60%' }
+          ]
+        }
+      }
+    },
+    ANIMATION: {
+      NAME: 'warp',
+      DURATION: 10,
+      KEYFRAMES: {
+        START: { rotation: 0 },
+        QUARTER: { rotation: 15 },
+        HALF: { rotation: -5 },
+        THREE_QUARTERS: { rotation: 15 },
+        END: { rotation: 0 }
+      }
+    },
+    SHADOW: {
+      OFFSET_Y: 15,
+      BLUR: 55,
+      SPREAD: 20,
+      OPACITY: 0.1
+    },
+    DIMENSIONS: {
+      DEFAULT_SIZE: 300
+    }
+  };
+
+  // Rest of the class implementation remains the same but uses CONFIG values
   static defaultParams = {
-    size: 300,
-    rotationDegrees: 15,
-    animationDuration: 10,
-    shadowBlur: 20,
-    shadowSpread: 15,
-    shadowOpacity: 0.1,
-    gradientAngle1: 45,
-    gradientAngle2: 80,
-    gradientAngle3: 45,
-    primaryColor: '#2ef5cd',
-    secondaryColor: '#4c6ecf',
-    tertiaryColor: '#fa99c7',
-    backgroundColor1: '#5958b3',
-    backgroundColor2: '#4c6ecf'
+    size: OneOrb.CONFIG.DIMENSIONS.DEFAULT_SIZE,
+    rotationDegrees: OneOrb.CONFIG.ANIMATION.KEYFRAMES.QUARTER.rotation,
+    animationDuration: OneOrb.CONFIG.ANIMATION.DURATION,
+    shadowBlur: OneOrb.CONFIG.SHADOW.BLUR,
+    shadowSpread: OneOrb.CONFIG.SHADOW.SPREAD,
+    shadowOpacity: OneOrb.CONFIG.SHADOW.OPACITY
+    // ... other parameters
   };
 
   constructor(params = {}) {

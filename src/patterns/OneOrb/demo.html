@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneOrb Demo</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to top, rgba(89,88,179,1) 0%,rgba(76,110,207,0.29) 17%,rgba(76,110,207,0) 24%), 
+                        linear-gradient(20deg, #2ef5cd 0%,#4c6ecf 44%,#6567ce 60%,#fa99c7 100%);
+            overflow: hidden;
+        }
+
+        #orb-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="orb-container">
+        <div id="orb"></div>
+    </div>
+
+    <script type="module">
+        import OneOrb from './OneOrb.js';
+
+        // Initialize the effect
+        const orb = new OneOrb();
+        const { css, keyframes } = orb.generate();
+
+        // Apply the generated styles
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            ${keyframes}
+            #orb {
+                ${css}
+            }
+        `;
+        document.head.appendChild(styleSheet);
+
+        // Optional: Add controls for live parameter updates
+        // This would require additional UI elements and css.gui integration
+    </script>
+</body>
+</html>
