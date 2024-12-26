@@ -3,7 +3,8 @@
  * @module cssVarExtractor
  * @requires css-tree
  */
-import * as csstree from 'css-tree';
+import * as csstree from '/node_modules/css-tree/dist/csstree.esm.js';
+//'css-tree';
 
 export class CssVarExtractor {
     /**
