@@ -4,7 +4,7 @@
  * @requires BasePattern
  */
 
-import BasePattern from '../BasePattern';
+import BasePattern from '/patterns/BasePattern.js';
 
 /**
  * @typedef {Object} GradientStop
@@ -29,13 +29,19 @@ import BasePattern from '../BasePattern';
  * @description Creates an animated orb with multiple gradient layers and rotation animation
  */
 export default class OneOrb extends BasePattern {
-  /**
-   * @constant {Object} CONFIG
-   * @property {Object} GRADIENTS - Gradient configurations for background and orb
-   * @property {Object} ANIMATION - Animation settings including keyframes
-   * @property {Object} SHADOW - Shadow effect parameters
-   * @property {Object} DIMENSIONS - Size configurations
-   */
+  static CSS_VARS = {
+    '--orb-size': '300px',
+    '--orb-rotation': '0deg',
+    '--orb-shadow-blur': '55px',
+    '--orb-shadow-spread': '20px',
+    '--orb-shadow-opacity': '0.1',
+    '--orb-gradient-1': '',
+    '--orb-gradient-2': '',
+    '--orb-gradient-3': '',
+    '--orb-gradient-4': '',
+    '--orb-animation-duration': '10s'
+  };
+
   static CONFIG = {
     GRADIENTS: {
       BACKGROUND: {
@@ -115,15 +121,6 @@ export default class OneOrb extends BasePattern {
     }
   };
 
-  /**
-   * @constant {Object} defaultParams
-   * @property {number} size - Size of the orb in pixels
-   * @property {number} rotationDegrees - Maximum rotation angle
-   * @property {number} animationDuration - Animation duration in seconds
-   * @property {number} shadowBlur - Shadow blur radius
-   * @property {number} shadowSpread - Shadow spread radius
-   * @property {number} shadowOpacity - Shadow opacity value
-   */
   static defaultParams = {
     size: OneOrb.CONFIG.DIMENSIONS.DEFAULT_SIZE,
     rotationDegrees: OneOrb.CONFIG.ANIMATION.KEYFRAMES.QUARTER.rotation,
@@ -131,77 +128,66 @@ export default class OneOrb extends BasePattern {
     shadowBlur: OneOrb.CONFIG.SHADOW.BLUR,
     shadowSpread: OneOrb.CONFIG.SHADOW.SPREAD,
     shadowOpacity: OneOrb.CONFIG.SHADOW.OPACITY
-    // ... other parameters
   };
 
-  /**
-   * @constructor
-   * @param {Object} params - Configuration parameters
-   * @param {number} [params.seed] - Random seed for pattern generation
-   */
   constructor(params = {}) {
     super(params.seed);
     this.params = { ...OneOrb.defaultParams, ...params };
+    this.root = document.documentElement;
   }
 
-  /**
-   * @public
-   * @returns {Object} Generated CSS and keyframe animations
-   * @property {string} css - The CSS rules for the orb
-   * @property {string} keyframes - The keyframe animation definition
-   */
-  generate() {
-    const {
-      size,
-      rotationDegrees,
-      animationDuration,
-      shadowBlur,
-      shadowSpread,
-      shadowOpacity,
-      gradientAngle1,
-      gradientAngle2,
-      gradientAngle3,
-      primaryColor,
-      secondaryColor,
-      tertiaryColor,
-      backgroundColor1,
-      backgroundColor2
-    } = this.params;
+  async generate() {
+    // Set base properties
+    this.root.style.setProperty('--orb-size', `${this.params.size}px`);
+    this.root.style.setProperty('--orb-animation-duration', `${this.params.animationDuration}s`);
+    this.root.style.setProperty('--orb-shadow-blur', `${this.params.shadowBlur}px`);
+    this.root.style.setProperty('--orb-shadow-spread', `${this.params.shadowSpread}px`);
+    this.root.style.setProperty('--orb-shadow-opacity', this.params.shadowOpacity);
+
+    // Generate and set gradients
+    const gradient1 = await this.getRandomLinearGradient(BasePattern.config);
+    const gradient2 = await this.getRandomRadialGradient(BasePattern.config);
+    const gradient3 = await this.getRandomLinearGradient(BasePattern.config);
+    const gradient4 = await this.getRandomLinearGradient(BasePattern.config);
+
+    this.root.style.setProperty('--orb-gradient-1', gradient1);
+    this.root.style.setProperty('--orb-gradient-2', gradient2);
+    this.root.style.setProperty('--orb-gradient-3', gradient3);
+    this.root.style.setProperty('--orb-gradient-4', gradient4);
 
     return {
       css: `
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: ${size}px;
-        height: ${size}px;
-        background: 
-          linear-gradient(${gradientAngle1}deg, rgba(46,244,205,0) 30%, rgba(198,171,203,0) 60%, ${tertiaryColor} 100%),
-          radial-gradient(ellipse at center, rgba(76,110,207,0) 27%, rgba(76,110,207,0.33) 51%, rgba(89,88,179,0.58) 69%, ${backgroundColor1} 100%),
-          linear-gradient(${gradientAngle2}deg, rgba(246,148,203,0) 0%, rgba(70,232,205,.1) 70%, ${primaryColor} 100%),
-          linear-gradient(${gradientAngle3}deg, ${primaryColor} 0%, rgba(76,110,207,0.2) 50%, rgba(76,110,207,0) 60%);
-        border-radius: 100%;
-        box-shadow: 0 ${shadowSpread}px ${shadowBlur}px ${shadowSpread}px rgba(0, 0, 0, ${shadowOpacity});
-        animation: ${animationDuration}s warp infinite;
+        .orb {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: var(--orb-size);
+          height: var(--orb-size);
+          background: 
+            var(--orb-gradient-1),
+            var(--orb-gradient-2),
+            var(--orb-gradient-3),
+            var(--orb-gradient-4);
+          border-radius: 100%;
+          box-shadow: 0 var(--orb-shadow-spread) var(--orb-shadow-blur) 
+                     var(--orb-shadow-spread) 
+                     rgba(0, 0, 0, var(--orb-shadow-opacity));
+          animation: var(--orb-animation-duration) warp infinite;
+        }
       `,
       keyframes: `
         @keyframes warp {
           0% { transform: translate(-50%, -50%) rotate(0deg); }
-          25% { transform: translate(-50%, -50%) rotate(${rotationDegrees}deg); }
-          50% { transform: translate(-50%, -50%) rotate(${-rotationDegrees/3}deg); }
-          75% { transform: translate(-50%, -50%) rotate(${rotationDegrees}deg); }
+          25% { transform: translate(-50%, -50%) rotate(var(--orb-rotation)); }
+          50% { transform: translate(-50%, -50%) rotate(calc(var(--orb-rotation) * -0.33)); }
+          75% { transform: translate(-50%, -50%) rotate(var(--orb-rotation)); }
           100% { transform: translate(-50%, -50%) rotate(0deg); }
         }
       `
     };
   }
 
-  /**
-   * @static
-   * @public
-   * @returns {Object} Parameter definitions for the css.gui interface
-   */
   static getParameterDefinitions() {
     return {
       size: { type: 'range', min: 100, max: 500, default: 300 },

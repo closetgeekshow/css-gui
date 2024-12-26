@@ -3,6 +3,17 @@
  * @module BasePattern
  */
 
+export const config = {
+  transform: {
+    rotate: { min: -360, max: 360, default: 0, unit: "deg" },
+    scale: { min: 1, max: 1.2, default: 1 },
+  },
+  borderRadius: {
+    horizontal: { min: 20, max: 80, unit: "%" },
+    vertical: { min: 15, max: 100, unit: "%" },
+  },
+};
+
 export default class BasePattern {
   constructor(seed = 1) {
     this.seed = seed;
@@ -43,7 +54,10 @@ export default class BasePattern {
    * @param {number} max - Maximum degrees
    * @returns {number} Random rotation in degrees
    */
-  getRandomDegRange(min, max) {
+  getRandomDegRange(
+    min = config.transform.rotate.min,
+    max = config.transform.rotate.max
+  ) {
     return this.random() * (max - min) + min;
   }
 
@@ -62,18 +76,19 @@ export default class BasePattern {
    * @async
    * @returns {Promise<string>} CSS linear-gradient string
    */
-  async getRandomLinearGradient() {
+  async getRandomLinearGradient(config) {
     const response = await fetch("/uiPatterns.json");
     const patterns = await response.json();
     const patternIndex = Math.floor(this.random() * patterns.length);
     const pattern = patterns[patternIndex];
 
-    return `linear-gradient(47deg, ${pattern.colors
+    return `linear-gradient(${this.getRandomDegRange(
+      config.transform.rotate.min,
+      config.transform.rotate.max
+    )}deg, ${pattern.colors
       .map((color, i) => `${color} ${(i * 100) / (pattern.colors.length - 1)}%`)
       .join(", ")})`;
   }
-
-  
 
   /**
    * @public
@@ -161,5 +176,16 @@ export default class BasePattern {
    */
   generate() {
     throw new Error("Generate method must be implemented by child class");
+  }
+
+  async getRandomRadialGradient() {
+    const response = await fetch("/uiPatterns.json");
+    const patterns = await response.json();
+    const patternIndex = Math.floor(this.random() * patterns.length);
+    const pattern = patterns[patternIndex];
+
+    return `radial-gradient(ellipse at center, ${pattern.colors
+      .map((color, i) => `${color} ${(i * 100) / (pattern.colors.length - 1)}%`)
+      .join(", ")})`;
   }
 }
