@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS Variable Extractor Demo</title>
+</head>
+<body>
+    <h1>CSS Variable Extractor</h1>
+    <textarea id="input" rows="10" cols="50">
+:root {
+    --primary-color: #ff0000;
+    --spacing-unit: 8px;
+}
+    </textarea>
+    <button id="extract">Extract Variables</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { CssVarExtractor } from './cssVarExtractor.js';
+
+        document.getElementById('extract').onclick = () => {
+            const css = document.getElementById('input').value;
+            const vars = CssVarExtractor.extract(css);
+            document.getElementById('output').textContent = 
+                JSON.stringify(vars, null, 2);
+        };
+    </script>
+</body>
+</html>
