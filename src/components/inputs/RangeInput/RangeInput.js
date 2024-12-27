@@ -4,7 +4,7 @@
  * @requires BaseInput
  */
 
-import { BaseInput } from './BaseInput';
+import { BaseInput } from '../BaseInput';
 
 /**
  * Input component for handling numeric range values

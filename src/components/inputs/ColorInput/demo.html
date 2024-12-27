@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Input Demo</title>
+    <style>
+        .input-container {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Input Demo</h1>
+    
+    <div class="input-container">
+        <label>Primary Color Variable (--primary-color):</label>
+        <button id="colorButton">Pick Color</button>
+        <div class="color-preview" id="preview"></div>
+        <div id="result"></div>
+    </div>
+
+    <script type="module">
+        import { ColorInput } from './ColorInput.js';
+
+        const colorButton = document.getElementById('colorButton');
+        const preview = document.getElementById('preview');
+        const result = document.getElementById('result');
+
+        const input = new ColorInput('--primary-color', '#ff0000', (variable, value) => {
+            result.textContent = `${variable}: ${value}`;
+            preview.style.backgroundColor = value;
+        });
+
+        input.picker.setOptions({
+            parent: colorButton
+        });
+
+        preview.style.backgroundColor = input.getValue();
+    </script>
+</body>
+</html>

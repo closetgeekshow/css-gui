@@ -5,7 +5,7 @@
  * @requires vanilla-picker
  */
 
-import { BaseInput } from './BaseInput';
+import { BaseInput } from '../BaseInput';
 import Picker from 'vanilla-picker';
 
 /**
