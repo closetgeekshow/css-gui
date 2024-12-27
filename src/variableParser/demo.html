@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Variable Parser Demo</title>
+    <style>
+        textarea { width: 100%; height: 200px; }
+        #output { white-space: pre; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Variable Parser Demo</h1>
+    <textarea id="cssInput">:root {
+    --primary-color: #ff0000;
+    --spacing: 1rem;
+}</textarea>
+    <button id="parse">Parse Variables</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { VariableParser } from './variableParser.js';
+
+        document.getElementById('parse').addEventListener('click', () => {
+            const css = document.getElementById('cssInput').value;
+            const variables = VariableParser.extract(css);
+            document.getElementById('output').textContent = 
+                JSON.stringify(variables, null, 2);
+        });
+    </script>
+</body>
+</html>

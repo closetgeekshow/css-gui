@@ -1,5 +1,14 @@
 {
   "dependencies": {
-    "css-tree": "^3.1.0"
+    "@prisma/client": "^6.1.0",
+    "css-tree": "^3.1.0",
+    "express": "^4.21.2",
+    "sqlite3": "^5.1.7",
+    "vanilla-picker": "^2.12.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "prisma": "^6.1.0"
   }
 }

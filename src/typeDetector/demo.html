@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Type Detector Demo</title>
+</head>
+<body>
+    <h1>Type Detector Demo</h1>
+    <input type="text" id="valueInput" placeholder="Enter CSS value">
+    <div id="result"></div>
+
+    <script type="module">
+        import { TypeDetector } from './typeDetector.js';
+
+        const input = document.getElementById('valueInput');
+        const result = document.getElementById('result');
+
+        input.addEventListener('input', () => {
+            const type = TypeDetector.detect(input.value);
+            result.textContent = `Detected type: ${type}`;
+        });
+    </script>
+</body>
+</html>
