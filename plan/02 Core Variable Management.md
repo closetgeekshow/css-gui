@@ -48,7 +48,7 @@
 
     // List all presets
     GET /api/presets
-    ```
+    
 
 3. Data Model
     ```prisma:prisma/schema.prisma

@@ -66,10 +66,10 @@
                 }
             }
     
-3. [ ] Input Component System  
+3. [x] Input Component System  
     - [x] Base input component class
     - [x] Specialized inputs (color, range, etc)
-    - [ ] Input validation and formatting
+    - [x] Input validation and formatting
             
             // javascript:src/components/BaseInput.js
             class BaseInput {

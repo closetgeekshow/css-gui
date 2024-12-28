@@ -4,7 +4,7 @@
  * @requires BaseInput
  */
 
-import { BaseInput } from '../BaseInput';
+import { BaseInput } from '../BaseInput/BaseInput.js';
 
 /**
  * Input component for handling CSS dimension values (px, rem, etc)

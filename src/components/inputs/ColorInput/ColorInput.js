@@ -5,8 +5,8 @@
  * @requires vanilla-picker
  */
 
-import { BaseInput } from '../BaseInput';
-import Picker from 'vanilla-picker';
+import { BaseInput } from '../BaseInput/BaseInput.js';
+import Picker from '/node_modules/vanilla-picker/dist/vanilla-picker.mjs';
 
 /**
  * Input component for handling CSS color values
