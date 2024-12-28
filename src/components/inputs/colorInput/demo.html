@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Color Input Demo</title>
+</head>
+<body>
+    <h1>Color Input Demo</h1>
+    
+    <div class="input-container">
+        <label>Primary Color (--primary-color):</label>
+        <div id="colorContainer"></div>
+        <div id="result"></div>
+    </div>
+
+    <script type="module">
+        import { ColorInput } from './colorInput.js';
+
+        const container = document.getElementById('colorContainer');
+        const result = document.getElementById('result');
+
+        const input = new ColorInput('--primary-color', '#ff0000', (variable, value) => {
+            result.textContent = `${variable}: ${value}`;
+        });
+
+        container.appendChild(input.element);
+    </script>
+</body>
+</html>

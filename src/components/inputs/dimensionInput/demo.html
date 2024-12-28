@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dimension Input Demo</title>
+    <style>
+        .input-container {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dimension Input Demo</h1>
+    
+    <div class="input-container">
+        <label>Spacing Variable (--spacing):</label>
+        <input type="number" id="valueInput">
+        <select id="unitSelect">
+            <option value="px">px</option>
+            <option value="rem">rem</option>
+            <option value="em">em</option>
+            <option value="vh">vh</option>
+            <option value="vw">vw</option>
+            <option value="%">%</option>
+        </select>
+        <div id="result"></div>
+    </div>
+
+    <script type="module">
+        import { DimensionInput } from './dimensionInput.js';
+
+        const valueInput = document.getElementById('valueInput');
+        const unitSelect = document.getElementById('unitSelect');
+        const result = document.getElementById('result');
+
+        const input = new DimensionInput('--spacing', '16px', (variable, value) => {
+            result.textContent = `${variable}: ${value}`;
+        });
+
+        valueInput.value = input.numericValue;
+        unitSelect.value = input.unit;
+
+        valueInput.addEventListener('input', updateValue);
+        unitSelect.addEventListener('change', updateValue);
+
+        function updateValue() {
+            const newValue = `${valueInput.value}${unitSelect.value}`;
+            input.handleChange(newValue);
+        }
+    </script>
+</body>
+</html>

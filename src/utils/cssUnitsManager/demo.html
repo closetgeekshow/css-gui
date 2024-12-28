@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSSUnitsManager Demo</title>
+</head>
+<body>
+    <h1>CSSUnitsManager Demo</h1>
+    <button onclick="showLengthUnits()">Show Length Units</button>
+    <button onclick="showDimensionUnits()">Show Dimension Units</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { CSSUnitsManager } from './cssUnitsManager.js';
+        
+        await CSSUnitsManager.initialize();
+        
+        window.showLengthUnits = () => {
+            const units = CSSUnitsManager.getLengthUnits();
+            document.getElementById('output').textContent = JSON.stringify(units, null, 2);
+        };
+        
+        window.showDimensionUnits = () => {
+            const units = CSSUnitsManager.getDimensionUnits();
+            document.getElementById('output').textContent = JSON.stringify(units, null, 2);
+        };
+    </script>
+</body>
+</html>

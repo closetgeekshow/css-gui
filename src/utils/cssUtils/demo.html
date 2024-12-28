@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CssUtils Demo</title>
+</head>
+<body>
+    <h1>CssUtils Demo</h1>
+    <textarea id="cssInput">:root {
+        --color: blue;
+        --spacing: 1rem;
+    }</textarea>
+    <button onclick="extractVars()">Extract Variables</button>
+    <pre id="output"></pre>
+
+    <script type="module">
+        import { CssUtils } from './cssUtils.js';
+        
+        window.extractVars = () => {
+            const css = document.getElementById('cssInput').value;
+            const vars = CssUtils.extractVariables(css);
+            document.getElementById('output').textContent = JSON.stringify(vars, null, 2);
+        };
+    </script>
+</body>
+</html>

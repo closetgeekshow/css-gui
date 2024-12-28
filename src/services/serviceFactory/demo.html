@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Service Factory Demo</title>
+    <style>
+        .container { padding: 20px; }
+        .service-panel { margin: 20px 0; padding: 15px; border: 1px solid #ccc; }
+        .status { font-weight: bold; }
+        .mock { color: green; }
+        .real { color: blue; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Service Factory Demo</h1>
+
+        <div class="service-panel">
+            <h2>Current Service Configuration</h2>
+            <p>Service Type: <span id="serviceType" class="status"></span></p>
+            <button onclick="toggleServiceType()">Toggle Service Type</button>
+        </div>
+
+        <div class="service-panel">
+            <h2>Test Service Operations</h2>
+            <button onclick="testSavePreset()">Test Save Preset</button>
+            <button onclick="testLoadPresets()">Test Load Presets</button>
+            <pre id="output"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ServiceFactory } from './serviceFactory.js';
+        import { CONFIG } from '../../config.js';
+
+        // Make functions available globally
+        window.toggleServiceType = () => {
+            CONFIG.USE_MOCK_SERVICES = !CONFIG.USE_MOCK_SERVICES;
+            updateServiceDisplay();
+        };
+
+        window.testSavePreset = async () => {
+            const service = ServiceFactory.getPresetService();
+            const result = await service.savePreset({
+                name: "Test Preset",
+                variables: { "--color": "blue" }
+            });
+            displayResult('Save Result:', result);
+        };
+
+        window.testLoadPresets = async () => {
+            const service = ServiceFactory.getPresetService();
+            const result = await service.loadPresets();
+            displayResult('Load Result:', result);
+        };
+
+        function updateServiceDisplay() {
+            const type = CONFIG.USE_MOCK_SERVICES ? 'Mock Service' : 'Real Service';
+            const className = CONFIG.USE_MOCK_SERVICES ? 'mock' : 'real';
+            const element = document.getElementById('serviceType');
+            element.textContent = type;
+            element.className = `status ${className}`;
+        }
+
+        function displayResult(label, data) {
+            document.getElementById('output').textContent = 
+                `${label}\n${JSON.stringify(data, null, 2)}`;
+        }
+
+        // Initialize display
+        updateServiceDisplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CSS GUI Demo</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --spacing: 1rem;
+            --border-radius: 4px;
+        }
+
+        .demo-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .variable-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+        }
+
+        .preset-list {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .preset-item {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>CSS Variable Preset Demo</h1>
+        
+        <div class="variable-display">
+            <h2>Current CSS Variables</h2>
+            <pre id="variables"></pre>
+        </div>
+
+        <div class="preset-controls">
+            <h2>Create New Preset</h2>
+            <input type="text" id="presetName" placeholder="Preset Name">
+            <button onclick="saveCurrentAsPreset()">Save as Preset</button>
+        </div>
+
+        <div class="preset-list">
+            <h2>Saved Presets</h2>
+            <div id="presetContainer"></div>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { CssUtils } from '../utils/CssUtils.js';
+        import { MockPresetService } from './MockPresetService.js';
+
+        // Make services available globally for demo
+        window.cssUtils = CssUtils;
+        window.presetService = new MockPresetService();
+
+        // Display current CSS variables
+        function updateVariableDisplay() {
+            const cssText = document.querySelector('style').textContent;
+            const variables = CssUtils.extractVariables(cssText);
+            document.getElementById('variables').textContent = 
+                JSON.stringify(variables, null, 2);
+        }
+
+        // Save current variables as a preset
+        window.saveCurrentAsPreset = async () => {
+            const name = document.getElementById('presetName').value;
+            if (!name) {
+                alert('Please enter a preset name');
+                return;
+            }
+
+            const cssText = document.querySelector('style').textContent;
+            const variables = CssUtils.extractVariables(cssText);
+            
+            const preset = await presetService.savePreset({
+                name,
+                variables
+            });
+
+            updatePresetList();
+            document.getElementById('presetName').value = '';
+        };
+
+        // Display saved presets
+        async function updatePresetList() {
+            const presets = await presetService.loadPresets();
+            const container = document.getElementById('presetContainer');
+            
+            container.innerHTML = presets.map(preset => `
+                <div class="preset-item">
+                    <span>${preset.name}</span>
+                    <div>
+                        <button onclick="loadPreset('${preset.id}')">Load</button>
+                        <button onclick="deletePreset('${preset.id}')">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Load a preset
+        window.loadPreset = async (id) => {
+            const preset = await presetService.loadPresetById(id);
+            const root = document.documentElement;
+            
+            Object.entries(preset.variables).forEach(([name, value]) => {
+                root.style.setProperty(name, value);
+            });
+            
+            updateVariableDisplay();
+        };
+
+        // Delete a preset
+        window.deletePreset = async (id) => {
+            await presetService.deletePreset(id);
+            updatePresetList();
+        };
+
+        // Initialize
+        updateVariableDisplay();
+        updatePresetList();
+    </script>
+</body>
+</html>
