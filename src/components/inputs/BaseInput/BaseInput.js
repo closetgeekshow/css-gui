@@ -9,17 +9,35 @@
  */
 export class BaseInput {
     /**
+     * Base input component for handling CSS variable changes
+     * @class BaseInput
+     * @classdesc Provides core input functionality for CSS variable manipulation
+     * 
      * @constructor
      * @param {string} variable - CSS variable name (e.g. --primary-color)
      * @param {string} value - Initial value for the input
      * @param {function} onChange - Callback function when value changes
+     * @returns {void}
+     * 
+     * @example
+     * const input = new BaseInput('--primary-color', '#ffffff', (newValue) => {
+     *   console.log(newValue);
+     * });
      */
     constructor(variable, value, onChange) {
         this.variable = variable;
         this.value = value;
+        this.initialValue = value;
         this.onChange = onChange;
         this.errors = [];
-        this.initialValue = value;
+        
+        // Create base element
+        this.element = document.createElement('input');
+        this.element.type = 'text';
+        this.element.value = value;
+        this.element.addEventListener('input', (e) => {
+            this.handleChange(e.target.value);
+        });
     }
     
     /**

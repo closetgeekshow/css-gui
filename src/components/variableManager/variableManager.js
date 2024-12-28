@@ -1,5 +1,5 @@
-import { TypeDetector } from '../typeDetector/typeDetector.js';
-import { VariableParser } from '../variableParser/variableParser.js';
+import { TypeDetector } from '/src/components/typeDetector/typeDetector.js';
+import { VariableParser } from '/src/components/variableParser/variableParser.js';
 
 export class VariableManager {
     constructor() {

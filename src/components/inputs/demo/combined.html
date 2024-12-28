@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSS Variable Input Components Demo</title>
+    <style>
+        .component-container {
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #000;
+            margin: 10px 0;
+        }
+        .result {
+            margin-top: 10px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS Variable Input Components</h1>
+
+    <div class="component-container">
+        <h2>Color Input</h2>
+        <button id="colorButton">Pick Color</button>
+        <div class="color-preview" id="colorPreview"></div>
+        <div id="colorResult" class="result"></div>
+    </div>
+
+    <div class="component-container">
+        <h2>Range Input</h2>
+        <input type="range" id="rangeInput">
+        <div class="range-controls">
+            <label>Min: <input type="number" id="minInput" value="0"></label>
+            <label>Max: <input type="number" id="maxInput" value="1"></label>
+            <label>Step: <input type="number" id="stepInput" value="0.1"></label>
+        </div>
+        <div id="rangeResult" class="result"></div>
+    </div>
+
+    <div class="component-container">
+        <h2>Dimension Input</h2>
+        <input type="number" id="dimensionValue">
+        <select id="dimensionUnit">
+            <option value="px">px</option>
+            <option value="rem">rem</option>
+            <option value="em">em</option>
+            <option value="vh">vh</option>
+            <option value="vw">vw</option>
+            <option value="%">%</option>
+        </select>
+        <div id="dimensionResult" class="result"></div>
+    </div>
+
+    <script type="module">
+        import { ColorInput } from '../ColorInput/ColorInput.js';
+        import { RangeInput } from '../RangeInput/RangeInput.js';
+        import { DimensionInput } from '../DimensionInput/DimensionInput.js';
+
+        // Color Input Setup
+        const colorInput = new ColorInput('--primary-color', '#ff0000', (variable, value) => {
+            document.getElementById('colorResult').textContent = `${variable}: ${value}`;
+            document.getElementById('colorPreview').style.backgroundColor = value;
+        });
+        colorInput.picker.setOptions({ parent: document.getElementById('colorButton') });
+        document.getElementById('colorPreview').style.backgroundColor = colorInput.getValue();
+
+        // Range Input Setup
+        const rangeInput = new RangeInput('--opacity', '0.5', (variable, value) => {
+            document.getElementById('rangeResult').textContent = `${variable}: ${value}`;
+        });
+        const range = document.getElementById('rangeInput');
+        range.value = rangeInput.numericValue;
+        range.addEventListener('input', () => rangeInput.handleChange(range.value));
+
+        // Dimension Input Setup
+        const dimensionInput = new DimensionInput('--spacing', '16px', (variable, value) => {
+            document.getElementById('dimensionResult').textContent = `${variable}: ${value}`;
+        });
+        const dimValue = document.getElementById('dimensionValue');
+        const dimUnit = document.getElementById('dimensionUnit');
+        dimValue.value = dimensionInput.numericValue;
+        dimUnit.value = dimensionInput.unit;
+        
+        [dimValue, dimUnit].forEach(el => {
+            el.addEventListener('change', () => {
+                dimensionInput.handleChange(`${dimValue.value}${dimUnit.value}`);
+            });
+        });
+    </script>
+</body>
+</html>

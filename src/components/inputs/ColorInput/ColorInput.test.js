@@ -6,15 +6,19 @@ describe('ColorInput', () => {
         expect(input.getValue()).toBe('#ff0000');
     });
 
-    test('creates picker instance', () => {
+    test('creates DOM elements', () => {
         const input = new ColorInput('--test', '#ff0000', () => {});
-        expect(input.picker).toBeDefined();
+        expect(input.element).toBeDefined();
+        expect(input.preview).toBeDefined();
+        expect(input.element.className).toBe('color-input');
+        expect(input.preview.className).toBe('color-preview');
     });
 
-    test('calls onChange with hex color', () => {
+    test('updates preview on color change', () => {
         const onChange = jest.fn();
         const input = new ColorInput('--primary', '#ff0000', onChange);
-        input.picker.onChange({ hex: '#00ff00' });
+        input.handleChange('#00ff00');
+        expect(input.preview.style.backgroundColor).toBe('#00ff00');
         expect(onChange).toHaveBeenCalledWith('--primary', '#00ff00');
     });
 });
