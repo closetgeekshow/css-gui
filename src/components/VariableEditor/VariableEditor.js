@@ -13,6 +13,7 @@ import { ColorInput } from '/src/components/inputs/ColorInput/ColorInput.js';
 import { RangeInput } from '/src/components/inputs/RangeInput/RangeInput.js';
 import { DimensionInput } from '/src/components/inputs/DimensionInput/DimensionInput.js';
 import { BaseInput } from '/src/components/inputs/BaseInput/BaseInput.js';
+import { PresetManager } from '/src/components/PresetManager/PresetManager.js';
 
 
 
@@ -31,6 +32,9 @@ export class VariableEditor {
 
     // Bind the method to maintain correct 'this' context
     this.handleVariableChange = this.handleVariableChange.bind(this);
+
+    this.presetManager = new PresetManager(this);
+    this.container.appendChild(this.presetManager.element);
    
   }
 

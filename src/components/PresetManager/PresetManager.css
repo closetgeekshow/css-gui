@@ -1,0 +1,25 @@
+.preset-manager {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    display: grid;
+    gap: 1rem;
+}
+
+.preset-manager input,
+.preset-manager select,
+.preset-manager button {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.preset-manager button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.preset-manager button:hover {
+    background: #45a049;
+}

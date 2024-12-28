@@ -1,6 +1,6 @@
 # Variable Editor
 
-Main UI component that provides a complete interface for editing CSS custom properties with live preview functionality.
+Main UI component for editing CSS variables with preset management.
 
 ## Usage
 
@@ -27,6 +27,12 @@ Main UI component that provides a complete interface for editing CSS custom prop
 - Reset functionality for individual variables
 - Responsive grid layout
 - Monospace variable name display
+- Integrated preset management
+- Save/load variable configurations
+- Real-time preview updates
+
+## Components
+- PresetManager - Handles saving and loading variable configurations
 
 ## API
 

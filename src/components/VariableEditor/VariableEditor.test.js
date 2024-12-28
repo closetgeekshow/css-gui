@@ -36,3 +36,9 @@ describe('VariableEditor', () => {
         expect(style.textContent).toContain('--primary-color: #00ff00');
     });
 });
+
+test('initializes preset manager', () => {
+    const editor = new VariableEditor(container, manager);
+    expect(editor.presetManager).toBeDefined();
+    expect(editor.presetManager instanceof PresetManager).toBe(true);
+});

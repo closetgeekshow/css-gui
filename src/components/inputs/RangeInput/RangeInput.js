@@ -25,33 +25,40 @@ export class RangeInput extends BaseInput {
         this.element = document.createElement('div');
         this.element.className = 'range-input';
         
-        // Create range input
+        // Parse initial value first
+        this.numericValue = this.parseValue(value);
+        
+        // Configure range input with constraints before setting value
+        this.min = 0;
+        this.max = 1;
+        this.step = 0.1;
+        
+        // Create and configure range input
         this.rangeInput = document.createElement('input');
         this.rangeInput.type = 'range';
-        this.rangeInput.value = this.numericValue;
+        this.rangeInput.min = this.min;
+        this.rangeInput.max = this.max;
+        this.rangeInput.step = this.step;
+        this.rangeInput.value = this.numericValue; // Set after constraints
+        
         this.rangeInput.addEventListener('input', (e) => {
             this.handleChange(e.target.value);
         });
         
-        // Create value label
+        // Create and set value label
         this.valueLabel = document.createElement('span');
         this.valueLabel.className = 'range-value';
-        this.valueLabel.textContent = this.value;
+        this.valueLabel.textContent = this.numericValue;
         
-        // Add elements to container
+        // Assemble UI
         this.element.appendChild(this.rangeInput);
         this.element.appendChild(this.valueLabel);
-
-        this.min = 0;
-        this.max = 100;
-        this.step = 1;
-        this.numericValue = this.parseValue(value);
     }
     
     parseValue(value) {
+        // Handle values like "0.5" or ".5"
         return parseFloat(value) || 0;
-    }
-    
+    }    
     handleChange(newValue) {
         if (this.validate()) {
             this.value = newValue;
