@@ -1,75 +1,91 @@
-# Task List for Refactoring and Enhancing the Variable Editor Project
+# Dependency-Ordered Task List for Lit Migration
 
-## 1. Core Refactoring Tasks
-- [ ] **Introduce Event Bus**  
-  - Implement a lightweight event bus class for decoupling communication between components.
-  - Replace direct method calls with event emissions and listeners.
+## 1. Foundation Layer
+### 1.1 Event Architecture
+- [ ] Implement EventBus
+  - Create EventBus class with typed events
+  - Add subscription management
+  - Add event emission handling
+  
+- [ ] Create UIState Manager
+  - Implement state container
+  - Add reactive state updates
+  - Connect with EventBus
 
-- [ ] **Modularize Rendering Logic**  
-  - Extract rendering logic (e.g., `createVariableRow`) from `VariableEditor` into a helper class or separate module.
+### 1.2 Base Components
+- [ ] Create LitBaseInput
+  - Port BaseInput to Lit component
+  - Add reactive properties
+  - Implement shadow DOM styling
+  - Add validation hooks
 
-- [ ] **Separate UI and Logic**  
-  - Create a dedicated UI renderer for DOM manipulations.
-  - Ensure `VariableEditor` handles only state management and business logic.
+- [ ] Implement FormValidator
+  - Create validation rule system
+  - Add error collection mechanism
+  - Connect with UIState
 
-- [ ] **Implement UI State Management**  
-  - Create a `UIState` class to track component states (e.g., validation errors, active presets).
-  - Emit events on state changes and bind them to the UI updates.
+## 2. Input Components
+### 2.1 Simple Inputs
+- [ ] Port RangeInput
+  - Convert to Lit component
+  - Add reactive min/max/step
+  - Implement value formatting
 
-## 2. Component-Specific Enhancements
-### 2.1 Inputs
-- [ ] **Fallback Control for Text Variables**  
-  - Add a simple text input control for handling variables without specific types.
-  - Integrate this into the `createInputForType` method in `VariableEditor`.
+- [ ] Port TextInput
+  - Create basic text input
+  - Add validation patterns
+  - Implement error display
 
-- [ ] **Improve Range Input**  
-  - Allow dynamic configuration of `min`, `max`, and `step` values via metadata or external config.
+### 2.2 Complex Inputs
+- [ ] Port ColorInput
+  - Convert to Lit component
+  - Integrate color picker
+  - Add color validation
+  - Implement preview updates
 
-- [ ] **Enhance Dimension Input**  
-  - Validate unit compatibility dynamically during input changes.
-  - Ensure invalid units cannot be selected.
+- [ ] Port DimensionInput
+  - Convert to Lit component
+  - Add unit management
+  - Implement validation rules
+  - Connect with CSSUnitsManager
 
-- [ ] **Refactor Base Input**  
-  - Move common input logic (e.g., validation, error handling) into `BaseInput`.
-  - Add methods for inline error display.
+## 3. Management Layer
+### 3.1 Variable Management
+- [ ] Update VariableManager
+  - Add reactive variable tracking
+  - Implement change detection
+  - Connect with UIState
 
-### 2.2 Form Validation
-- [ ] **Centralize Form Validation**  
-  - Implement a `FormValidator` utility to validate all input values collectively.
-  - Display inline error messages for invalid fields.
+- [ ] Remove PresetSystem
+  - ensure all references to and for PresetSystem is removed
 
-- [ ] **Export Validated Values**  
-  - Add a method to `VariableEditor` to serialize validated variables into a `:root {}` CSS block.
+### 3.2 Editor Components
+- [ ] Port VariableEditor
+  - Convert main editor to Lit
+  - Implement component composition
+  - Add dynamic input creation
+  - Connect all subsystems
 
-### 2.3 Preset Management
-- [ ] **Preset Manager Cleanup**  
-  - Decouple preset management from `VariableEditor` via event bus.
-  - Refactor `PresetManager` methods to emit events instead of directly modifying state.
+## 4. Integration & Polish
+### 4.1 Testing
+- [ ] Unit Tests
+  - Test each Lit component
+  - Validate event system
+  - Check state management
 
-- [ ] **Handle Edge Cases for Presets**  
-  - Add user feedback for duplicate preset names or invalid presets.
-  - Ensure presets without any variables can’t be saved.
+- [ ] Integration Tests
+  - Test component interactions
+  - Check error handling
 
-## 3. General Enhancements
-- [ ] **Add Comprehensive Validation**  
-  - Ensure all variable changes are validated before applying them to the preview.
-  - Provide user-friendly error feedback for invalid inputs.
+### 4.2 Documentation
+- [ ] API Documentation
+  - Document Lit components
+  - Update usage examples
+  - Add migration guide
 
-- [ ] **Improve Error Reporting**  
-  - Centralize error handling with UI integration for better feedback.
-
-- [ ] **Add Tests for Components**  
-  - Create unit tests for all components (`VariableEditor`, `PresetManager`, and inputs).
-
-- [ ] **Document API and Usage**  
-  - Update documentation to reflect changes in API and usage.
-
-## 4. Final Testing and Polishing
-- [ ] **Test Event Bus Integration**  
-  - Verify all components work seamlessly with the event bus.
-
-- [ ] **Test UI Responsiveness**  
-  - Ensure the editor layout works well on different screen sizes.
-
-- [ ] **Optimize Performance**  
-  - Profile rendering and event handling for potential bottlenecks.
+### 4.3 Performance
+- [ ] Optimization
+  - Audit render cycles
+  - Check memory usage
+  - Profile event handling
+  - Implement lazy loading
