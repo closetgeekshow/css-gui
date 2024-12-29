@@ -21,3 +21,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+textarea {
+  min-width: 60ch;
+  min-height: 20ch;
+ }
