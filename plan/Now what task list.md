@@ -12,6 +12,10 @@
   - Create a dedicated UI renderer for DOM manipulations.
   - Ensure `VariableEditor` handles only state management and business logic.
 
+- [ ] **Implement UI State Management**  
+  - Create a `UIState` class to track component states (e.g., validation errors, active presets).
+  - Emit events on state changes and bind them to the UI updates.
+
 ## 2. Component-Specific Enhancements
 ### 2.1 Inputs
 - [ ] **Fallback Control for Text Variables**  
@@ -29,7 +33,15 @@
   - Move common input logic (e.g., validation, error handling) into `BaseInput`.
   - Add methods for inline error display.
 
-### 2.2 Preset Management
+### 2.2 Form Validation
+- [ ] **Centralize Form Validation**  
+  - Implement a `FormValidator` utility to validate all input values collectively.
+  - Display inline error messages for invalid fields.
+
+- [ ] **Export Validated Values**  
+  - Add a method to `VariableEditor` to serialize validated variables into a `:root {}` CSS block.
+
+### 2.3 Preset Management
 - [ ] **Preset Manager Cleanup**  
   - Decouple preset management from `VariableEditor` via event bus.
   - Refactor `PresetManager` methods to emit events instead of directly modifying state.
