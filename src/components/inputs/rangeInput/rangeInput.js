@@ -3,16 +3,34 @@
  * @module RangeInput
  * @requires BaseInput
  * @requires ValueParser
+ * @requires UIUtils
  */
 
-import { BaseInput } from '../baseInput/baseInput.js';
-import { ValueParser } from '../../../utils/valueParser/valueParser.js';
+import { BaseInput } from '/src/components/inputs/baseInput/baseInput.js';
+import { ValueParser } from '/src/utils/valueParser/valueParser.js';
+import { UIUtils } from '/src/utils/uiUtils/uiUtils.js';
 
 export class RangeInput extends BaseInput {
     constructor(variable, value, onChange) {
         super(variable, value, onChange);
         
         this.numericValue = ValueParser.parseNumeric(value);
+
+        UIUtils.injectStyles('range-input-styles', `
+            .range-container {
+                display: flex;
+                gap: 12px;
+                align-items: center;
+            }
+            .range-slider {
+                flex: 1;
+                min-width: 150px;
+            }
+            .range-value {
+                min-width: 40px;
+                text-align: right;
+            }
+        `);
         
         this.rangeInput = UIUtils.createInput('range', {
             min: 0,
@@ -25,6 +43,7 @@ export class RangeInput extends BaseInput {
         this.valueLabel = UIUtils.createContainer('range-value');
         this.valueLabel.textContent = this.numericValue;
         
+        this.element.className = 'range-container';
         this.element.appendChild(this.rangeInput);
         this.element.appendChild(this.valueLabel);
         
@@ -52,6 +71,12 @@ export class RangeInput extends BaseInput {
         });
     }
 
+    /**
+     * Sets the range constraints for the slider
+     * @param {number} min - Minimum value
+     * @param {number} max - Maximum value
+     * @param {number} step - Step increment
+     */
     setRange(min, max, step) {
         Object.assign(this.rangeInput, { min, max, step });
     }

@@ -2,10 +2,15 @@
  * @file Dimension input component for CSS size variables
  * @module DimensionInput
  * @requires BaseInput
+ * @requires ValueParser
+ * @requires CSSUnitsManager
+ * @requires UIUtils
  */
 
 import { BaseInput } from '/src/components/inputs/baseInput/baseInput.js';
-import { CSSUnitsManager } from '/src/utils/cssUnitsManager.js';
+import { ValueParser } from '/src/utils/valueParser/valueParser.js';
+import { CSSUnitsManager } from '/src/utils/cssUnitsManager/cssUnitsManager.js';
+import { UIUtils } from '/src/utils/uiUtils/uiUtils.js';
 
 /**
  * Input component for handling CSS dimension values (px, rem, etc)
@@ -22,24 +27,50 @@ export class DimensionInput extends BaseInput {
     constructor(variable, value, onChange) {
         super(variable, value, onChange);
         
-        // Start with default units while waiting for full list
-        this.units = ['px', 'rem', 'em'];
-        [this.numericValue, this.unit] = this.parseValue(value);
+        const { value: numericValue, unit } = ValueParser.parseDimension(value);
+        this.numericValue = numericValue;
+        this.unit = unit;
+
+        UIUtils.injectStyles('dimension-input-styles', `
+            .dimension-input {
+                display: flex;
+                gap: 8px;
+                align-items: center;
+            }
+            .dimension-number {
+                width: 80px;
+            }
+            .dimension-unit {
+                width: 70px;
+            }
+        `);
+        
+        this.numberInput = UIUtils.createInput('number', {
+            value: this.numericValue,
+            className: 'dimension-number'
+        });
+        
+        this.unitSelect = document.createElement('select');
+        this.unitSelect.className = 'dimension-unit';
+        
+        this.element.appendChild(this.numberInput);
+        this.element.appendChild(this.unitSelect);
         
         this.initializeUnits();
-        this.createElements();
+        this.setupEventListeners();
     }
 
     async initializeUnits() {
         await CSSUnitsManager.initialize();
-        this.units = CSSUnitsManager.getLengthUnits();
+        const units = CSSUnitsManager.getLengthUnits();
         
         // Refresh the unit select options
         this.unitSelect.innerHTML = '';
-        this.units.forEach(unit => {
-            const option = document.createElement('option');
-            option.value = unit;
-            option.textContent = unit;
+        units.forEach(unit => {
+            const option = UIUtils.createInput('option', {
+                value: unit,
+                textContent: unit
+            });
             this.unitSelect.appendChild(option);
         });
         
@@ -47,55 +78,29 @@ export class DimensionInput extends BaseInput {
         this.unitSelect.value = this.unit;
     }
 
-    createElements() {
-        // Create container element
-        this.element = document.createElement('div');
-        this.element.className = 'dimension-input';
-        
-        // Create number input
-        this.numberInput = document.createElement('input');
-        this.numberInput.type = 'number';
-        this.numberInput.value = this.numericValue;
-        this.numberInput.addEventListener('input', (e) => {
-            const currentUnit = this.unitSelect.value; // Preserve current unit
-            this.handleChange(`${e.target.value}${currentUnit}`);
-        });
-        
-        // Create unit select
-        this.unitSelect = document.createElement('select');
-        this.units.forEach(unit => {
-            const option = document.createElement('option');
-            option.value = unit;
-            option.textContent = unit;
-            this.unitSelect.appendChild(option);
-        });
-        this.unitSelect.value = this.unit;
-        this.unitSelect.addEventListener('change', (e) => {
-            const currentNumber = this.numberInput.value; // Preserve current number
-            this.handleChange(`${currentNumber}${e.target.value}`);
-        });
-        
-        this.element.appendChild(this.numberInput);
-        this.element.appendChild(this.unitSelect);
-    }
-    
-    handleChange(newValue) {
-        if (this.validate()) {
-            this.value = newValue;
-            [this.numericValue, this.unit] = this.parseValue(newValue);
-            this.numberInput.value = this.numericValue;
-            this.unitSelect.value = this.unit;
-            this.onChange(this.variable, this.value);
+    transformValue(value) {
+        try {
+            const parsed = ValueParser.parseDimension(value);
+            return `${parsed.value}${parsed.unit}`;
+        } catch (error) {
+            this.addError('parsing', error.message);
+            return this.value;
         }
     }
-    
-    /**
-     * Parses dimension value into number and unit
-     * @param {string} value - Value to parse (e.g. "100px")
-     * @returns {Array} [number, unit]
-     */
-    parseValue(value) {
-        const match = value.match(/^([\d.]+)(\D+)$/);
-        return match ? [parseFloat(match[1]), match[2]] : [0, 'px'];
+
+    updateUI(value) {
+        const { value: num, unit } = ValueParser.parseDimension(value);
+        this.numberInput.value = num;
+        this.unitSelect.value = unit;
+    }
+
+    setupEventListeners() {
+        this.numberInput.addEventListener('input', (e) => {
+            this.handleChange(`${e.target.value}${this.unitSelect.value}`);
+        });
+        
+        this.unitSelect.addEventListener('change', (e) => {
+            this.handleChange(`${this.numberInput.value}${e.target.value}`);
+        });
     }
 }

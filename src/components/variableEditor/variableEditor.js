@@ -18,7 +18,7 @@ import { PresetManager } from '/src/components/presetManager/presetManager.js';
 
 
 
-import { ServiceFactory } from '/src/services/serviceFactory.js';
+import { ServiceFactory } from '/src/services/serviceFactory/serviceFactory.js';
 
 export class VariableEditor {
   /**

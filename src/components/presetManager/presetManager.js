@@ -4,7 +4,7 @@
  * @requires VariableManager
  */
 
-import { PresetService } from '/src/services/presetService.js';
+import { PresetService } from '/src/services/presetService/presetService.js';
 
 export class PresetManager {
     /**

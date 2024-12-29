@@ -1,5 +1,5 @@
 import { TypeDetector } from "/src/components/typeDetector/typeDetector.js";
-import { CssUtils } from "/src/utils/cssUtils.js";
+import { CssUtils } from "/src/utils/cssUtils/cssUtils.js";
 
 export class VariableManager {
   constructor() {
