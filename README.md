@@ -1,21 +1,22 @@
-# css effects generator tools
+ASCII Diagram:
++-------------------+------+
+| axure             | css  |
+| prototype         | edit |
+|                   |      |
+|                   |      |
+|                   |      |
++-------------------+------+
 
-## The backstory
-We're trying to figure out how to approach a system for generating css effects. This is mark 2, the first was trying to do too many things at once. This time we're going to try to create self contained tools/scripts that are focused on a particular task.
+# css edit
+This is a component that's a toolbar for styling, it's either inset inside the prototype player or floating on top of the wireframe (and can be collapsed)
 
-## The new approach, what tools I think we need
-* [x] A tool for pulling out a list of all the css variables in a given css file or string
-* [x] a tool that can take a list of css variables and generate a ui component for editing and setting them with javascript
-  * [x] a preset system so that you can save and load values for the variables
-  * [ ] fix broken parts
-* [ ] a tool that can take html, css and js and generate an html page of them all together perhaps embedded in a iframe or as a scoped custom element 
-  * [ ] html, css and js can be in json, seperate files, or strings, or edited in real time in the browser
-* [ ] a tool that can look at some css (in a file, json, or string) and provide a list of attributes inside that could be parameterized into css variables that would be good for procedural generation
-  * [ ] we could also figure out a way to write this as a reusable LLM prompt  
-* [ ] a tool for generating sensible color schemes from a given color
+* shows defined styles with one row per property for the "selected" shape/dynamic panel/group
+* properties can be known css properties, or known css variables or a new css variable
+* values can be css values or known css variables
 
-## Requirements
-- code must be written in vanilla javascript in ES6 format using ESM imports
-- typescript libraries are allowed but i don't want to ever write it
-- code must follow the (JSDoc Style Guide)[jsDocStyleGuide.md]
-- folders and files must follow the (Pattern)[folderPattern.md]
+# axure prototype
+This is a running Axure Prototype
+
+# prior art
+(gh:paperclip-ui/paperclip)[https://github.com/paperclip-ui/paperclip]
+(gh:components-ai/css.gui)[https://github.com/components-ai/css.gui]w
