@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@compai/css-gui": "^0.0.247"
+  }
+}
