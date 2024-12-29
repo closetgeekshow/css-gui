@@ -1,0 +1,8 @@
+public component Hello {
+  render div {
+    style {
+      color: red
+    }
+    slot children
+  }
+}

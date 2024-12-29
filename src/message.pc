@@ -1,0 +1,9 @@
+public component Message {
+    render div {
+        style {
+            color: red
+            font-size: Comic Sans
+        }
+        slot children
+    }
+}
