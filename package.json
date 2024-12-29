@@ -1,0 +1,22 @@
+{
+  "name": "css-gui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "paperclip-cli dev",
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "paperclip-cli": "^18.3.9",
+    "vite": "^6.0.5"
+  },
+  "dependencies": {
+    "@paperclip-ui/common": "^20.5.17",
+    "@paperclip-ui/core": "^20.5.17",
+    "@paperclip-ui/designer": "^19.0.10",
+    "@paperclip-ui/web-renderer": "^19.0.10"
+  }
+}

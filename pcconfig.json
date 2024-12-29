@@ -1,0 +1,6 @@
+{
+  "compilerOptions": {
+    "name": "paperclip-react-compiler"
+  },
+  "filesGlob": "**/*.pc"
+}

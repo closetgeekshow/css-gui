@@ -1,0 +1,9 @@
+public component Demo {
+  render div {
+    style {
+      color: #333333
+      padding: 20px
+    }
+    text "Hello from Paperclip!"
+  }
+}
